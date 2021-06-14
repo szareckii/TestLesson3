@@ -13,7 +13,6 @@ import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import retrofit2.Response
 
-//Тестируем наш Презентер
 class SearchPresenterTest {
 
     private lateinit var presenter: SearchPresenter
@@ -26,39 +25,40 @@ class SearchPresenterTest {
 
     @Before
     fun setUp() {
-        //Обязательно для аннотаций "@Mock"
-        //Раньше было @RunWith(MockitoJUnitRunner.class) в аннотации к самому классу (SearchPresenterTest)
         MockitoAnnotations.initMocks(this)
-        //Создаем Презентер, используя моки Репозитория и Вью, проинициализированные строкой выше
-        presenter = SearchPresenter(viewContract, repository)
+        presenter = SearchPresenter(repository = repository)
+        presenter.onAttach(viewContract)
+    }
+
+    @Test
+    fun onAttachView_Test(){
+        assertNotNull(presenter.getViewContract())
+    }
+
+    @Test
+    fun onDetachView_Test(){
+        presenter.onDetach()
+        assertNull(presenter.getViewContract())
     }
 
     @Test //Проверим вызов метода searchGitHub() у нашего Репозитория
     fun searchGitHub_Test() {
         val searchQuery = "some query"
-        //Запускаем код, функционал которого хотим протестировать
         presenter.searchGitHub("some query")
-        //Убеждаемся, что все работает как надо
         verify(repository, times(1)).searchGithub(searchQuery, presenter)
     }
 
     @Test //Проверяем работу метода handleGitHubError()
     fun handleGitHubError_Test() {
-        //Вызываем у Презентера метод handleGitHubError()
         presenter.handleGitHubError()
-        //Проверяем, что у viewContract вызывается метод displayError()
         verify(viewContract, times(1)).displayError()
     }
-
-    //Проверяем работу метода handleGitHubResponse
 
     @Test //Для начала проверим, как приходит ответ сервера
     fun handleGitHubResponse_ResponseUnsuccessful() {
         //Создаем мок ответа сервера с типом Response<SearchResponse?>?
         val response = mock(Response::class.java) as Response<SearchResponse?>
-        //Описываем правило, что при вызове метода isSuccessful должен возвращаться false
         `when`(response.isSuccessful).thenReturn(false)
-        //Убеждаемся, что ответ действительно false
         assertFalse(response.isSuccessful)
     }
 
