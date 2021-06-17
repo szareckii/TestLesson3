@@ -11,7 +11,6 @@ import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.Until
 import com.geekbrains.tests.R
 import org.junit.Assert
 import org.junit.Before
@@ -45,7 +44,7 @@ class BehaviorTest {
         context.startActivity(intent)
 
         //Ждем, когда приложение откроется на смартфоне чтобы начать тестировать его элементы
-        uiDevice.wait(Until.hasObject(By.pkg(packageName).depth(0)), TIMEOUT)
+        uiDevice.wait(androidx.test.uiautomator.Until.hasObject(By.pkg(packageName).depth(0)), TIMEOUT)
     }
 
     //Убеждаемся, что приложение открыто. Для этого достаточно найти на экране любой элемент
@@ -73,7 +72,7 @@ class BehaviorTest {
         //Это будет означать, что сервер вернул ответ с какими-то данными, то есть запрос отработал.
         val changedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, "totalCountTextView")),
+                androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
                 TIMEOUT
             )
         //Убеждаемся, что сервер вернул корректный результат. Обратите внимание, что количество
@@ -93,7 +92,7 @@ class BehaviorTest {
         //Это будет означать, что DetailsScreen открылся и это поле видно на экране.
         val changedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, "totalCountTextView")),
+                androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
                 TIMEOUT
             )
         //Убеждаемся, что поле видно и содержит предполагаемый текст.

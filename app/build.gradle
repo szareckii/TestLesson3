@@ -44,6 +44,7 @@ android {
             versionNameSuffix "-fake"
             buildConfigField "String", "TYPE", '"FAKE"'
         }
+
         real {
             applicationIdSuffix ".real"
             versionNameSuffix "-real"

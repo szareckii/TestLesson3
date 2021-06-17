@@ -53,7 +53,7 @@ class OpenOtherAppsTest {
             .getChildByText(
                 UiSelector()
                     .className(TextView::class.java.name),
-                "Settings"
+                "Настройки"
             )
         //Открываем
         settingsApp.clickAndWaitForNewWindow()

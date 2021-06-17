@@ -35,8 +35,42 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
         toDetailsActivityButton.setOnClickListener {
             startActivity(DetailsActivity.getIntent(this, totalCount))
         }
+
         setQueryListener()
+        setFindButtonListener()
         setRecyclerView()
+    }
+
+    private fun setFindButtonListener() {
+        toFindButton.setOnClickListener {
+            val query = searchEditText.text.toString()
+            if (checkSearchEditTextIsNotNull(query))
+                presenter.searchGitHub(query)
+
+//            val query = searchEditText.text.toString()
+//            if (query.isNotBlank()) {
+//                presenter.searchGitHub(query)
+//            } else {
+//                Toast.makeText(
+//                    this@MainActivity,
+//                    getString(R.string.enter_search_word),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        }
+    }
+
+    private fun checkSearchEditTextIsNotNull(query: String): Boolean {
+//        val query = searchEditText.text.toString()
+        if (query.isNullOrBlank()) {
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.enter_search_word),
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+        return true
     }
 
     private fun setRecyclerView() {
@@ -47,18 +81,22 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
     private fun setQueryListener() {
         searchEditText.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
                 val query = searchEditText.text.toString()
-                if (query.isNotBlank()) {
+                if (checkSearchEditTextIsNotNull(query))
                     presenter.searchGitHub(query)
-                    return@OnEditorActionListener true
-                } else {
-                    Toast.makeText(
-                        this@MainActivity,
-                        getString(R.string.enter_search_word),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@OnEditorActionListener false
-                }
+
+//                if (query.isNotBlank()) {
+//                    presenter.searchGitHub(query)
+//                    return@OnEditorActionListener true
+//                } else {
+//                    Toast.makeText(
+//                        this@MainActivity,
+//                        getString(R.string.enter_search_word),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    return@OnEditorActionListener false
+//                }
             }
             false
         })
@@ -116,6 +154,6 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
 
     companion object {
         const val BASE_URL = "https://api.github.com"
-        const val FAKE = "FAKE"
+//        const val FAKE = "FAKE"
     }
 }
