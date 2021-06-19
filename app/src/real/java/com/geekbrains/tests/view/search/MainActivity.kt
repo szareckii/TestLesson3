@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
     }
 
     private fun checkSearchEditTextIsNotNull(query: String): Boolean {
-        if (query.isNullOrBlank()) {
+        if (query.isBlank()) {
             Toast.makeText(
                 this@MainActivity,
                 getString(R.string.enter_search_word),

@@ -11,6 +11,7 @@ import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import com.geekbrains.tests.R
 import org.junit.Assert
 import org.junit.Before
@@ -44,7 +45,7 @@ class BehaviorTest {
         context.startActivity(intent)
 
         //Ждем, когда приложение откроется на смартфоне чтобы начать тестировать его элементы
-        uiDevice.wait(androidx.test.uiautomator.Until.hasObject(By.pkg(packageName).depth(0)), TIMEOUT)
+        uiDevice.wait(Until.hasObject(By.pkg(packageName).depth(0)), TIMEOUT)
     }
 
     //Убеждаемся, что приложение открыто. Для этого достаточно найти на экране любой элемент
@@ -72,7 +73,7 @@ class BehaviorTest {
         //Это будет означать, что сервер вернул ответ с какими-то данными, то есть запрос отработал.
         val changedText =
             uiDevice.wait(
-                    androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
+                    Until.findObject(By.res(packageName, "totalCountTextView")),
                     TIMEOUT
             )
         //Убеждаемся, что сервер вернул корректный результат. Обратите внимание, что количество
@@ -96,7 +97,7 @@ class BehaviorTest {
         //Это будет означать, что сервер вернул ответ с какими-то данными, то есть запрос отработал.
         val changedText =
                 uiDevice.wait(
-                        androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
+                        Until.findObject(By.res(packageName, "totalCountTextView")),
                         TIMEOUT
                 )
         //Убеждаемся, что сервер вернул корректный результат. Обратите внимание, что количество
@@ -107,14 +108,6 @@ class BehaviorTest {
     //Убеждаемся, что DetailsScreen открывается
     @Test
     fun test_OpenDetailsScreen() {
-//        Через uiDevice находим editText
-//        val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
-        //Через uiDevice находим FindButton
-//        val buttonSearch = uiDevice.findObject(By.res(packageName, "toFindButton"))
-        //Устанавливаем значение
-//        editText.text = "UiAutomator"
-        //Нажимаем на копку
-//        buttonSearch.click()
 
         //Находим кнопку
         val toDetails = uiDevice.findObject(By.res(packageName, "toDetailsActivityButton"))
@@ -125,7 +118,7 @@ class BehaviorTest {
         //Это будет означать, что DetailsScreen открылся и это поле видно на экране.
         val changedText =
             uiDevice.wait(
-                    androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
+                    Until.findObject(By.res(packageName, "totalCountTextViewDetail")),
                     TIMEOUT
             )
         //Убеждаемся, что поле видно и содержит предполагаемый текст.
@@ -133,7 +126,7 @@ class BehaviorTest {
         //так как мы кликаем по кнопке не отправляя никаких поисковых запросов.
         //Чтобы проверить отображение определенного количества репозиториев,
         //вам в одном и том же методе нужно отправить запрос на сервер и открыть DetailsScreen.
-        Assert.assertEquals(changedText.text, "Number of results: 0")
+        Assert.assertEquals(changedText.text.toString(), "Number of results: 0")
     }
 
     //Убеждаемся, что после поиска открывается DetailsScreen с верным результатом
@@ -144,21 +137,26 @@ class BehaviorTest {
         editText.text = "UiAutomator"
         buttonSearch.click()
 
-        uiDevice.wait(
-                androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
-                TIMEOUT
+        val totalCountTextView = uiDevice.wait(
+            Until.findObject(By.res(packageName, "totalCountTextView")),
+            TIMEOUT
         )
+
+        val mainPageCount = totalCountTextView.text.toString()
 
         val toDetails = uiDevice.findObject(By.res(packageName, "toDetailsActivityButton"))
 
         toDetails.click()
 
         val changedText =
-                uiDevice.wait(
-                        androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
-                        TIMEOUT
-                )
-        Assert.assertEquals(changedText.text, "Number of results: 673")
+            uiDevice.wait(
+                Until.findObject(By.res(packageName, "totalCountTextViewDetail")),
+                TIMEOUT
+            )
+
+        val detailPageCount = changedText.text.toString()
+
+        Assert.assertEquals(detailPageCount, mainPageCount)
     }
 
     //Убеждаемся, что в DetailsScreen работает кнопка "+"
@@ -169,17 +167,17 @@ class BehaviorTest {
 
         val changedText =
                 uiDevice.wait(
-                        androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
+                        Until.findObject(By.res(packageName, "totalCountTextViewDetail")),
                         TIMEOUT
                 )
 
         val toIncrementButton = uiDevice.findObject(By.res(packageName, "incrementButton"))
         toIncrementButton.click()
 
-        Assert.assertEquals(changedText.text, "Number of results: 1")
+        Assert.assertEquals(changedText.text.toString(), "Number of results: 1")
     }
 
-    //Убеждаемся, что в DetailsScreen работает кнопка "+"
+    //Убеждаемся, что в DetailsScreen работает кнопка "-"
     @Test
     fun test_OpenDetailsScreenAndClickDecrement() {
         val toDetails = uiDevice.findObject(By.res(packageName, "toDetailsActivityButton"))
@@ -187,41 +185,31 @@ class BehaviorTest {
 
         val changedText =
                 uiDevice.wait(
-                        androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
+                        Until.findObject(By.res(packageName, "totalCountTextViewDetail")),
                         TIMEOUT
                 )
 
         val toIncrementButton = uiDevice.findObject(By.res(packageName, "decrementButton"))
         toIncrementButton.click()
 
-        Assert.assertEquals(changedText.text, "Number of results: -1")
+        Assert.assertEquals(changedText.text.toString(), "Number of results: -1")
     }
 
     @Test
-    fun test_SearchToButtonIsNegative() {
+    fun test_SearchToButtonWithEmptyWordIsNegative() {
         val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
         val buttonSearch = uiDevice.findObject(By.res(packageName, "toFindButton"))
-        val toast = uiDevice.findObject(By.res(packageName, "enter_search_word"))
 
         editText.text = ""
         buttonSearch.click()
 
-//        val changedText =
-//                uiDevice.wait(
-//                        androidx.test.uiautomator.Until.findObject(By.res(packageName, "totalCountTextView")),
-//                        TIMEOUT
-//                )
-
-        uiDevice.
-
-        val isAddFavorites: Boolean = AutomatorHelper.waitForToast("Enter search word", TIMEOUT)
-        Assert.assertTrue("add folder to favorites fail", isAddFavorites)
-
-//        onView(withText(R.string.enter_search_word)).inRoot(withDecorView(not(mActivityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
-
-//        Assert.assertEquals(changedText.text.toString(), "Number of results: 0")
+        val changedText =
+            uiDevice.wait(
+                Until.findObject(By.res(packageName, "totalCountTextViewDetail")),
+                TIMEOUT
+            )
+        Assert.assertNull(changedText)
     }
-
 
 
     companion object {

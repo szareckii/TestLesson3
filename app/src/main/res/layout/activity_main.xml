@@ -40,8 +40,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin"
+        android:layout_marginTop="16dp"
         android:text="@string/to_details"
-        app:layout_constraintTop_toBottomOf="@id/toFindButton" />
+        app:layout_constraintTop_toBottomOf="@id/toFindButton"
+        tools:layout_editor_absoluteX="16dp" />
 
     <TextView
         android:id="@+id/totalCountTextView"
