@@ -195,6 +195,7 @@ class BehaviorTest {
         Assert.assertEquals(changedText.text.toString(), "Number of results: -1")
     }
 
+    //Убеждаемся, что при нажатии на поиск при пустом поле для поиска - техтВью - невидемый.
     @Test
     fun test_SearchToButtonWithEmptyWordIsNegative() {
         val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
@@ -205,12 +206,11 @@ class BehaviorTest {
 
         val changedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, "totalCountTextViewDetail")),
+                Until.findObject(By.res(packageName, "totalCountTextView")),
                 TIMEOUT
             )
         Assert.assertNull(changedText)
     }
-
 
     companion object {
         private const val TIMEOUT = 15000L
