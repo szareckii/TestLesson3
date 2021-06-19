@@ -28,12 +28,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/toFindButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin"
+        android:text="@string/to_find"
+        app:layout_constraintTop_toBottomOf="@id/searchEditText" />
+
+    <Button
         android:id="@+id/toDetailsActivityButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin"
+        android:layout_marginTop="16dp"
         android:text="@string/to_details"
-        app:layout_constraintTop_toBottomOf="@id/searchEditText" />
+        app:layout_constraintTop_toBottomOf="@id/toFindButton"
+        tools:layout_editor_absoluteX="16dp" />
 
     <TextView
         android:id="@+id/totalCountTextView"
