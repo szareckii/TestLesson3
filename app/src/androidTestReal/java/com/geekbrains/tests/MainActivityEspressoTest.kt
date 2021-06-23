@@ -32,11 +32,11 @@ class MainActivityEspressoTest {
     @Test
     fun activitySearch_IsWorking() {
         onView(withId(R.id.searchEditText)).perform(click())
-        onView(withId(R.id.searchEditText)).perform(replaceText("algol"), closeSoftKeyboard())
+        onView(withId(R.id.searchEditText)).perform(replaceText(TEST_SEARCH_WORD_ALGOL), closeSoftKeyboard())
         onView(withId(R.id.searchEditText)).perform(pressImeActionButton())
 
         onView(isRoot()).perform(delay())
-        onView(withId(R.id.totalCountTextView)).check(matches(withText("Number of results: 2424")))
+        onView(withId(R.id.totalCountTextView)).check(matches(withText(TEST_NUMBER_OF_RESULTS_ALGOL_REAL)))
     }
 
     private fun delay(): ViewAction? {

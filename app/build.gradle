@@ -6,7 +6,7 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.geekbrains.tests"
@@ -56,7 +56,19 @@ android {
         androidTest {
             java.srcDirs += "src/sharedTestData/java"
         }
+        androidTestFake {
+            java.srcDirs += "src/sharedTestData/java"
+        }
+        androidTestReal {
+            java.srcDirs += "src/sharedTestData/java"
+        }
         test {
+            java.srcDirs += "src/sharedTestData/java"
+        }
+        testFake {
+            java.srcDirs += "src/sharedTestData/java"
+        }
+        testReal {
             java.srcDirs += "src/sharedTestData/java"
         }
     }
@@ -93,4 +105,5 @@ dependencies {
 
     //UI Automator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0-rc01'
 }

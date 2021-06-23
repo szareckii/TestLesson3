@@ -11,7 +11,9 @@ import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
-import com.geekbrains.tests.R
+import com.geekbrains.tests.*
+import com.geekbrains.tests.TEST_NUMBER_OF_RESULTS_ZERO
+import com.geekbrains.tests.TEST_SEARCH_WORD_UIAUTOMATOR
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -63,7 +65,7 @@ class BehaviorTest {
         //Через uiDevice находим editText
         val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
         //Устанавливаем значение
-        editText.text = "UiAutomator"
+        editText.text = TEST_SEARCH_WORD_UIAUTOMATOR
         //Отправляем запрос через Espresso
         Espresso.onView(ViewMatchers.withId(R.id.searchEditText))
             .perform(ViewActions.pressImeActionButton())
@@ -77,7 +79,7 @@ class BehaviorTest {
             )
         //Убеждаемся, что сервер вернул корректный результат. Обратите внимание, что количество
         //результатов может варьироваться во времени, потому что количество репозиториев постоянно меняется.
-        Assert.assertEquals(changedText.text.toString(), "Number of results: 672")
+        Assert.assertEquals(changedText.text.toString(), TEST_NUMBER_OF_RESULTS_UIAUTOMATOR_FAKE)
     }
 
     //Убеждаемся, что DetailsScreen открывается
@@ -100,10 +102,10 @@ class BehaviorTest {
         //так как мы кликаем по кнопке не отправляя никаких поисковых запросов.
         //Чтобы проверить отображение определенного количества репозиториев,
         //вам в одном и том же методе нужно отправить запрос на сервер и открыть DetailsScreen.
-        Assert.assertEquals(changedText.text, "Number of results: 0")
+        Assert.assertEquals(changedText.text, TEST_NUMBER_OF_RESULTS_ZERO)
     }
 
     companion object {
-        private const val TIMEOUT = 15000L
+        private const val TIMEOUT = 20000L
     }
 }
