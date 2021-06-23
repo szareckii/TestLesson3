@@ -12,7 +12,7 @@ import org.mockito.MockitoAnnotations
 class DetailsPresenterTest {
     private lateinit var presenter: DetailsPresenter
 
-    private var count: Int = 0
+    private var count: Int = TEST_NUMBER_ZERO
 
     @Mock
     private lateinit var viewContract: ViewDetailsContract

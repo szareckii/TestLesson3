@@ -1,4 +1,4 @@
-package com.geekbrains.tests.InitialTest
+package com.geekbrains.tests.initialtest
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider

@@ -1,4 +1,4 @@
-package com.geekbrains.tests.InitialTest
+package com.geekbrains.tests.initialtest
 
 import android.widget.TextView
 import androidx.test.ext.junit.runners.AndroidJUnit4

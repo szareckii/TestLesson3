@@ -1,4 +1,4 @@
-package com.geekbrains.tests.InitialTest
+package com.geekbrains.tests.uiautomator
 
 import android.content.Context
 import android.content.Intent
@@ -12,7 +12,10 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
-import com.geekbrains.tests.R
+import com.geekbrains.tests.*
+import com.geekbrains.tests.TEST_NUMBER_OF_RESULTS_UIAUTOMATOR_REAL
+import com.geekbrains.tests.TEST_NUMBER_OF_RESULTS_ZERO
+import com.geekbrains.tests.TEST_SEARCH_WORD_UIAUTOMATOR
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -64,7 +67,7 @@ class BehaviorTest {
         //Через uiDevice находим editText
         val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
         //Устанавливаем значение
-        editText.text = "UiAutomator"
+        editText.text = TEST_SEARCH_WORD_UIAUTOMATOR
         //Отправляем запрос через Espresso
         Espresso.onView(ViewMatchers.withId(R.id.searchEditText))
             .perform(ViewActions.pressImeActionButton())
@@ -78,7 +81,7 @@ class BehaviorTest {
             )
         //Убеждаемся, что сервер вернул корректный результат. Обратите внимание, что количество
         //результатов может варьироваться во времени, потому что количество репозиториев постоянно меняется.
-        Assert.assertEquals(changedText.text.toString(), "Number of results: 673")
+        Assert.assertEquals(changedText.text.toString(), TEST_NUMBER_OF_RESULTS_UIAUTOMATOR_REAL)
     }
 
     //Убеждаемся, что поиск работает как ожидается (поиск по кнопке "найти")
@@ -89,7 +92,7 @@ class BehaviorTest {
         //Через uiDevice находим FindButton
         val buttonSearch = uiDevice.findObject(By.res(packageName, "toFindButton"))
         //Устанавливаем значение
-        editText.text = "UiAutomator"
+        editText.text = TEST_SEARCH_WORD_UIAUTOMATOR
         //Нажимаем на копку
         buttonSearch.click()
 
@@ -102,7 +105,7 @@ class BehaviorTest {
                 )
         //Убеждаемся, что сервер вернул корректный результат. Обратите внимание, что количество
         //результатов может варьироваться во времени, потому что количество репозиториев постоянно меняется.
-        Assert.assertEquals(changedText.text.toString(), "Number of results: 673")
+        Assert.assertEquals(changedText.text.toString(), TEST_NUMBER_OF_RESULTS_UIAUTOMATOR_REAL)
     }
 
     //Убеждаемся, что DetailsScreen открывается
@@ -126,7 +129,7 @@ class BehaviorTest {
         //так как мы кликаем по кнопке не отправляя никаких поисковых запросов.
         //Чтобы проверить отображение определенного количества репозиториев,
         //вам в одном и том же методе нужно отправить запрос на сервер и открыть DetailsScreen.
-        Assert.assertEquals(changedText.text.toString(), "Number of results: 0")
+        Assert.assertEquals(changedText.text.toString(), TEST_NUMBER_OF_RESULTS_ZERO)
     }
 
     //Убеждаемся, что после поиска открывается DetailsScreen с верным результатом
@@ -134,7 +137,7 @@ class BehaviorTest {
     fun test_OpenDetailsScreenWithResultIsPositive() {
         val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
         val buttonSearch = uiDevice.findObject(By.res(packageName, "toFindButton"))
-        editText.text = "UiAutomator"
+        editText.text = TEST_SEARCH_WORD_UIAUTOMATOR
         buttonSearch.click()
 
         val totalCountTextView = uiDevice.wait(
@@ -174,7 +177,7 @@ class BehaviorTest {
         val toIncrementButton = uiDevice.findObject(By.res(packageName, "incrementButton"))
         toIncrementButton.click()
 
-        Assert.assertEquals(changedText.text.toString(), "Number of results: 1")
+        Assert.assertEquals(changedText.text.toString(), TEST_NUMBER_OF_RESULTS_PLUS_1)
     }
 
     //Убеждаемся, что в DetailsScreen работает кнопка "-"
@@ -192,7 +195,7 @@ class BehaviorTest {
         val toIncrementButton = uiDevice.findObject(By.res(packageName, "decrementButton"))
         toIncrementButton.click()
 
-        Assert.assertEquals(changedText.text.toString(), "Number of results: -1")
+        Assert.assertEquals(changedText.text.toString(), TEST_NUMBER_OF_RESULTS_MINUS_1)
     }
 
     //Убеждаемся, что при нажатии на поиск при пустом поле для поиска - техтВью - невидемый.
