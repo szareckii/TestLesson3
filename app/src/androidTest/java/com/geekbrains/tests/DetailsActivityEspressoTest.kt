@@ -45,40 +45,6 @@ class DetailsActivityEspressoTest {
         }
     }
 
-    @Test
-    fun activityTextView_HasText() {
-        val assertion = matches(withText(TEST_NUMBER_OF_RESULTS_ZERO))
-        onView(withId(R.id.totalCountTextView)).check(assertion)
-    }
-
-    @Test
-    fun activityTextView_IsDisplayed() {
-        onView(withId(R.id.totalCountTextView)).check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun activityTextView_IsCompletelyDisplayed() {
-        onView(withId(R.id.totalCountTextView)).check(matches(isCompletelyDisplayed()))
-    }
-
-    @Test
-    fun activityButtons_AreEffectiveVisible() {
-        onView(withId(R.id.incrementButton)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-        onView(withId(R.id.decrementButton)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-    }
-
-    @Test
-    fun activityButtonIncrement_IsWorking() {
-        onView(withId(R.id.incrementButton)).perform(click())
-        onView(withId(R.id.totalCountTextView)).check(matches(withText(TEST_NUMBER_OF_RESULTS_PLUS_1)))
-    }
-
-    @Test
-    fun activityButtonDecrement_IsWorking() {
-        onView(withId(R.id.decrementButton)).perform(click())
-        onView(withId(R.id.totalCountTextView)).check(matches(withText(TEST_NUMBER_OF_RESULTS_MINUS_1)))
-    }
-
     @After
     fun close() {
         scenario.close()
