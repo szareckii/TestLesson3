@@ -117,4 +117,7 @@ dependencies {
 
     //RecyclerView
     debugImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
+
+    //JUnit Rule
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 }

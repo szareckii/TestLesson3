@@ -24,11 +24,9 @@ import java.util.*
 class MainActivity : AppCompatActivity(), ViewSearchContract {
 
     private val adapter = SearchResultAdapter()
-
     private val viewModel: SearchViewModel by lazy {
         ViewModelProvider(this).get(SearchViewModel::class.java)
     }
-
     private var totalCount: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +79,6 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
         toFindButton.setOnClickListener {
             val query = searchEditText.text.toString()
             if (checkSearchEditTextIsNotNull(query))
-//                presenter.searchGitHub(query)
                 viewModel.searchGitHub(query)
         }
     }
@@ -121,18 +118,6 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
             }
             false
         })
-    }
-
-//    private fun createRepository(): RepositoryContract {
-//        return GitHubRepository(createRetrofit().create(GitHubApi::class.java))
-//    }
-
-    private fun createRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
     }
 
     override fun displaySearchResults(
