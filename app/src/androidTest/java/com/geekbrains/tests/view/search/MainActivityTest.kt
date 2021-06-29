@@ -1,6 +1,5 @@
 package com.geekbrains.tests.view.search
 
-
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
