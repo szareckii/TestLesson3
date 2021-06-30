@@ -85,7 +85,7 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun liveData_TestReturnValueIsError() {
+    fun liveData_TestReturnEmptyValueCountIsError() {
         testCoroutineRule.runBlockingTest {
             val observer = Observer<ScreenState> {}
             val liveData = searchViewModel.subscribeToLiveData()
@@ -107,6 +107,28 @@ class SearchViewModelTest {
         }
     }
 
+    @Test
+    fun liveData_TestReturnEmptyValueListIsError() {
+        testCoroutineRule.runBlockingTest {
+            val observer = Observer<ScreenState> {}
+            val liveData = searchViewModel.subscribeToLiveData()
+
+            //При вызове Репозитория возвращаем ошибку
+            Mockito.`when`(repository.searchGithubAsync(SEARCH_QUERY)).thenReturn(
+                SearchResponse(1, null)
+            )
+
+            try {
+                liveData.observeForever(observer)
+                searchViewModel.searchGitHub(SEARCH_QUERY)
+                //Убеждаемся, что Репозиторий вернул ошибку и LiveData возвращает ошибку
+                val value: ScreenState.Error = liveData.value as ScreenState.Error
+                Assert.assertEquals(value.error.message, ERROR_TEXT)
+            } finally {
+                liveData.removeObserver(observer)
+            }
+        }
+    }
     @Test
     fun coroutines_TestException() {
         testCoroutineRule.runBlockingTest {
