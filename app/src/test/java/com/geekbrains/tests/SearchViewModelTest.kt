@@ -103,17 +103,16 @@ class SearchViewModelTest {
         }
     }
 
-
-    @Test //Проверим как обрабатывается случай, если ответ от сервера пришел пустой
-    fun handleGitHubResponse_EmptyResponse() {
+    @Test //Проверяем как обрабатываются неполные данные
+    fun liveData_TestReturnEmptyCountResponse() {
         val observer = Observer<ScreenState> {}
         val liveData = searchViewModel.subscribeToLiveData()
-        val searchResponse = SearchResponse(1, listOf())
+        val error = Throwable(ERROR_TEXT_WITH_NULL)
 
         //При вызове Репозитория возвращаем шаблонные данные
         Mockito.`when`(repository.searchGithub(SEARCH_QUERY)).thenReturn(
             Observable.just(
-                SearchResponse(1, listOf())
+                SearchResponse(null, listOf())
             )
         )
 
@@ -121,8 +120,32 @@ class SearchViewModelTest {
             liveData.observeForever(observer)
             searchViewModel.searchGitHub(SEARCH_QUERY)
             //Убеждаемся, что Репозиторий вернул данные и LiveData передала их Наблюдателям
-            val value: ScreenState.Working = liveData.value as ScreenState.Working
-            Assert.assertEquals(value.searchResponse, searchResponse)
+            val value: ScreenState.Error = liveData.value as ScreenState.Error
+            Assert.assertEquals(value.error.message, error.message)
+        } finally {
+            liveData.removeObserver(observer)
+        }
+    }
+
+    @Test //Проверяем как обрабатываются неполные данные
+    fun liveData_TestReturnEmptyListResponse() {
+        val observer = Observer<ScreenState> {}
+        val liveData = searchViewModel.subscribeToLiveData()
+        val error = Throwable(ERROR_TEXT_WITH_NULL)
+
+        //При вызове Репозитория возвращаем шаблонные данные
+        Mockito.`when`(repository.searchGithub(SEARCH_QUERY)).thenReturn(
+            Observable.just(
+                SearchResponse(1, null)
+            )
+        )
+
+        try {
+            liveData.observeForever(observer)
+            searchViewModel.searchGitHub(SEARCH_QUERY)
+            //Убеждаемся, что Репозиторий вернул данные и LiveData передала их Наблюдателям
+            val value: ScreenState.Error = liveData.value as ScreenState.Error
+            Assert.assertEquals(value.error.message, error.message)
         } finally {
             liveData.removeObserver(observer)
         }
@@ -152,9 +175,9 @@ class SearchViewModelTest {
         }
     }
 
-
     companion object {
         private const val SEARCH_QUERY = "some query"
         private const val ERROR_TEXT = "error"
+        private const val ERROR_TEXT_WITH_NULL = "Search results or total count are null"
     }
 }
